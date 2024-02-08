@@ -8,7 +8,7 @@ interface ElementNode {
 
 let parsedTree: ElementNode;
 
-window.onload = function () {
+function InitiateWidget() {
     const parsedTreeStyles = `
         position: fixed;
         top: 10px;
@@ -182,7 +182,6 @@ function highlightElement(nodeElement: HTMLElement, event: MouseEvent) {
 
 function scrollToOriginalElement(nodeId: string) {
     const node = getNodeById(nodeId, parsedTree);
-    console.log(node);
     if (node && node.originalElement) {
         node.originalElement.scrollIntoView({ behavior: 'smooth' });
     }
@@ -202,3 +201,5 @@ function getNodeById(nodeId: string, node: ElementNode): ElementNode | null {
 
     return null;
 }
+
+window.addEventListener('load', InitiateWidget);
