@@ -1,5 +1,5 @@
 var parsedTree;
-window.onload = function () {
+function InitiateWidget() {
     var parsedTreeStyles = "\n        position: fixed;\n        top: 10px;\n        right: 10px;\n        width: 400px;\n        height: 100%;\n        background-color: #fff;\n        border: 1px solid #aaa;\n        border-radius: 5px;\n        padding: 10px;\n        overflow-y: auto;\n        z-index: 9999;\n    ";
     var nodeStyles = "\n        margin: 5px 0 5px 10px;\n    ";
     var toggleBtnStyles = "\n        cursor: pointer;\n        margin-right: 5px;\n    ";
@@ -70,7 +70,8 @@ window.onload = function () {
     div.setAttribute("style", parsedTreeStyles);
     div.innerHTML = generateHTML(parsedTree);
     document.body.appendChild(div);
-};
+}
+;
 function toggleNode(element) {
     var parent = element.parentElement;
     var childrenContainer = parent.querySelector('.children');
@@ -110,21 +111,21 @@ function highlightElement(nodeElement, event) {
 }
 function scrollToOriginalElement(nodeId) {
     var node = getNodeById(nodeId, parsedTree);
-    console.log(node);
     if (node && node.originalElement) {
         node.originalElement.scrollIntoView({ behavior: 'smooth' });
     }
 }
 function getNodeById(nodeId, node) {
-    if (node.id === nodeId) {
-        return node;
-    }
-    for (var _i = 0, _a = node.children; _i < _a.length; _i++) {
-        var childNode = _a[_i];
-        var foundNode = getNodeById(nodeId, childNode);
-        if (foundNode) {
-            return foundNode;
+    var stack = [node];
+    while (stack.length > 0) {
+        var currentNode = stack.pop();
+        if (currentNode.id === nodeId) {
+            return currentNode;
+        }
+        for (var i = currentNode.children.length - 1; i >= 0; i--) {
+            stack.push(currentNode.children[i]);
         }
     }
     return null;
 }
+window.addEventListener('load', InitiateWidget);

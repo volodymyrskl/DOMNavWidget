@@ -188,14 +188,16 @@ function scrollToOriginalElement(nodeId: string) {
 }
 
 function getNodeById(nodeId: string, node: ElementNode): ElementNode | null {
-    if (node.id === nodeId) {
-        return node;
-    }
+    const stack: ElementNode[] = [node];
 
-    for (const childNode of node.children) {
-        const foundNode = getNodeById(nodeId, childNode);
-        if (foundNode) {
-            return foundNode;
+    while (stack.length > 0) {
+        const currentNode = stack.pop()!;
+        if (currentNode.id === nodeId) {
+            return currentNode;
+        }
+
+        for (let i = currentNode.children.length - 1; i >= 0; i--) {
+            stack.push(currentNode.children[i]);
         }
     }
 
