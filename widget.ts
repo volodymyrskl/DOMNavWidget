@@ -142,9 +142,7 @@ function toggleNode(element: HTMLElement): void {
         return;
     }
 
-    const computedDisplay = window.getComputedStyle(childrenContainer).display;
-
-    if (computedDisplay === "none") {
+    if (childrenContainer.style.display === "none") {
         element.innerHTML = "&#9660;";
         childrenContainer.style.display = "block";
     } else {
@@ -165,19 +163,26 @@ function highlightElement(nodeElement: HTMLElement, event: MouseEvent) {
         const originalElement = node?.originalElement;
     
         if (originalElement && highlightedElement !== originalElement) {
+            const originalStyles = originalElement.getAttribute('style');
+            const highlightStyle = "background-color: yellow;";
+    
             if (highlightedElement) {
-                highlightedElement.style.backgroundColor = "";
+                highlightedElement.removeAttribute('style');
             }
-            originalElement.style.backgroundColor = "yellow";
+    
+            originalElement.setAttribute('style', `${originalStyles ? originalStyles + ';' : ''} ${highlightStyle}`);
             highlightedElement = originalElement;
     
             nodeElement.addEventListener("mouseleave", () => {
-                originalElement.style.backgroundColor = "";
+                if (originalStyles) {
+                    originalElement.setAttribute('style', originalStyles);
+                } else {
+                    originalElement.removeAttribute('style');
+                }
                 highlightedElement = null;
             });
         }
     }
-    
 }
 
 function scrollToOriginalElement(nodeId: string) {

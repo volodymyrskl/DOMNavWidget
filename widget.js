@@ -79,8 +79,7 @@ function toggleNode(element) {
         console.error('Could not find children container.');
         return;
     }
-    var computedDisplay = window.getComputedStyle(childrenContainer).display;
-    if (computedDisplay === "none") {
+    if (childrenContainer.style.display === "none") {
         element.innerHTML = "&#9660;";
         childrenContainer.style.display = "block";
     }
@@ -97,13 +96,20 @@ function highlightElement(nodeElement, event) {
         var node = getNodeById(nodeId, parsedTree);
         var originalElement_1 = node === null || node === void 0 ? void 0 : node.originalElement;
         if (originalElement_1 && highlightedElement !== originalElement_1) {
+            var originalStyles_1 = originalElement_1.getAttribute('style');
+            var highlightStyle = "background-color: yellow;";
             if (highlightedElement) {
-                highlightedElement.style.backgroundColor = "";
+                highlightedElement.removeAttribute('style');
             }
-            originalElement_1.style.backgroundColor = "yellow";
+            originalElement_1.setAttribute('style', "".concat(originalStyles_1 ? originalStyles_1 + ';' : '', " ").concat(highlightStyle));
             highlightedElement = originalElement_1;
             nodeElement.addEventListener("mouseleave", function () {
-                originalElement_1.style.backgroundColor = "";
+                if (originalStyles_1) {
+                    originalElement_1.setAttribute('style', originalStyles_1);
+                }
+                else {
+                    originalElement_1.removeAttribute('style');
+                }
                 highlightedElement = null;
             });
         }
