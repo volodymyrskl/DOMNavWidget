@@ -80,7 +80,7 @@ function InitiateWidget() {
     
             let elementIndex = 1;
             if (element.parentElement) {
-                // @ts-ignore
+                //@ts-ignore
                 elementIndex = Array.from(element.parentElement.children).indexOf(element) + 1;
             }
     

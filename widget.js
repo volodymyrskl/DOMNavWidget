@@ -33,7 +33,7 @@ function InitiateWidget() {
             }
             var elementIndex = 1;
             if (element.parentElement) {
-                // @ts-ignore
+                //@ts-ignore
                 elementIndex = Array.from(element.parentElement.children).indexOf(element) + 1;
             }
             var elementId = "".concat(parentIndexWithId, "-").concat(parsedElement.tagName, "_").concat(elementIndex);
